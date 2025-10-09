@@ -1,0 +1,22 @@
+#spring.application.name=demo-structure
+spring:
+  application:
+    name: demo-structure
+
+  config:
+    import: optional:configserver:http://localhost:8888
+
+management:
+  tracing:
+    sampling:
+      probability: 0.1
+    propagation:
+      enabled: false
+  zipkin:
+    tracing:
+      enabled: false
+      endpoint: http://35.209.164.72:9411/api/v2/spans
+      connect-timeout: 5000
+      read-timeout: 10000
+      flush-interval: 1000
+      batch-size: 10
