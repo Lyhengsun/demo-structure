@@ -8,10 +8,12 @@ import com.test.demostructure.exception.NotFoundException;
 import feign.Response;
 import feign.codec.ErrorDecoder;
 import org.apache.hc.core5.http.HttpStatus;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InputStream;
 
+@Component
 public class RetreiveMessageErrorDecoder implements ErrorDecoder {
     private final ErrorDecoder errorDecoder = new Default();
 
