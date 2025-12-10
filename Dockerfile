@@ -1,0 +1,23 @@
+# build jar file
+FROM gradle:9.1.0-jdk21-alpine AS build
+
+WORKDIR /app
+
+COPY gradlew .
+COPY gradle gradle
+# Download dependencies first (cached unless build files change)
+COPY build.gradle settings.gradle ./
+RUN ./gradlew dependencies --no-daemon
+
+# Then copy source and build (only invalidated when source changes)
+COPY src src
+RUN ./gradlew bootJar --no-daemon --parallel --build-cache
+
+# copy jar file
+FROM eclipse-temurin:21-jre-alpine-3.22 AS run
+
+WORKDIR /app
+
+COPY --from=build /app/build/libs/*.jar /app/app.jar
+
+CMD ["java", "-Xmx1G", "-jar", "/app/app.jar"]
